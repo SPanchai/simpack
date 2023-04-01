@@ -16,8 +16,7 @@ class SpeechToText:
         self.recognizer = sr.Recognizer()
         self.microphone = sr.Microphone()
 
-    def run(self):
-        # Start the ROS spin loop
+    def run(self):        
         while not rospy.is_shutdown():
             with self.microphone as source:
                 # Adjust for ambient noise
@@ -31,10 +30,6 @@ class SpeechToText:
                     text = self.recognizer.recognize_google(audio)
                     # Publish the speech to text conversion to the topic
                     self.pub.publish(text)
-                except sr.UnknownValueError:
-                    rospy.logwarn("Speech recognition could not understand audio")
-                except sr.RequestError as e:
-                    rospy.logwarn("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 if __name__ == '__main__':
     try:
